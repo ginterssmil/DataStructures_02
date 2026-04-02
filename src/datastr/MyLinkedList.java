@@ -79,7 +79,7 @@ public class MyLinkedList<Ttype> {
 		}
 		
 		if(position > howManyElements) {
-			throw new Exception("Pozīcija nevar b ūt lielāka par esošo elementu skaitu");
+			throw new Exception("Pozīcija nevar būt lielāka par esošo elementu skaitu");
 		}
 		
 		
@@ -98,14 +98,114 @@ public class MyLinkedList<Ttype> {
 		else if(position == howManyElements) {
 			add(element);
 		}
-		//TODO ja vēlas pievienot pa vidu
-		else
-		{
+		//ja vēlas pievienot pa vidu
+		else {
+			//pozīcija ir tuvak pirmajam blokam un veicam lēkšanu
+			//no pirmā bloka uz priekšu
+			MyNode<Ttype> newNode = new MyNode<Ttype>(element);
+			MyNode<Ttype> currentNode = null;
+
+			if(position < howManyElements/2) {
+				currentNode = firstNode;
+				
+				for(int i = 1; i <= position-1; i++) {
+					currentNode = currentNode.getNextNode();
+				}
+			}
+			//pozīcija ir tuvak pēdējam blokam un veicam lēkšanu 
+			//no pēdejā bloka uz atpakaļ
+			else {
+				currentNode = lastNode;
+
+				for(int i = howManyElements+1; i > position; i--) {
+					currentNode = currentNode.getPreviousNode();
+				}
+			}
 			
+			MyNode<Ttype> leftNode = currentNode;
+			MyNode<Ttype> rightNode = leftNode.getNextNode();
+			
+			leftNode.setNextNode(newNode);
+			newNode.setPreviousNode(leftNode);
+			
+			rightNode.setPreviousNode(newNode);
+			newNode.setNextNode(rightNode);
+			
+			howManyElements++;
 		}
 	}
+	//remove by position
+	public void remove(int position) throws Exception{
+		if(isEmpty()) {
+			throw new Exception("nevar iznemt elementu, jo saraksts ir tukss");
+		}
+		if(position < 0) {
+			throw new Exception("Pozīcija var būt tikai pozitīva");
+		}
+		
+		if(position >= howManyElements) {
+			throw new Exception("Pozīcija nevar būt lielāka par esošo elementu skaitu");
+		}
+		//dzest sakuma
+		if(position == 0){
+			firstNode = firstNode.getNextNode();
+			firstNode.setPreviousNode(null);
+			howManyElements--;
+		}
+		//ja vēlas dzest beigās
+		else if(position == howManyElements) {
+			lastNode = lastNode.getPreviousNode();
+			lastNode.setNextNode(null);
 
+			howManyElements--;
+		}
+		else {
+			MyNode<Ttype> currentNode = firstNode;
+			
+			for(int i = 1; i <= position-1;i++ ) {
+				currentNode = currentNode.getNextNode();
+			}
+			MyNode<Ttype> leftNode = currentNode.getPreviousNode();
+			MyNode<Ttype> rightNode = currentNode.getNextNode();
+			
+			leftNode.setNextNode(rightNode);
+			rightNode.setPreviousNode(leftNode);
+			howManyElements--;
+		}
+	}
+	//get by position
+	public Ttype get(int position) throws Exception {
+		if(isEmpty()) {
+			throw new Exception("nevar iznemt elementu, jo saraksts ir tukss");
+		}
+		if(position < 0) {
+			throw new Exception("Pozīcija var būt tikai pozitīva");
+		}
+		
+		if(position >= howManyElements) {
+			throw new Exception("Pozīcija nevar būt lielāka par esošo elementu skaitu");
+		}
+		
+		MyNode<Ttype> currentNode = null;
+		if(position < howManyElements/2) {
+			currentNode = firstNode;
+			
+			for(int i = 1; i <= position; i++) {
+				currentNode = currentNode.getNextNode();
+			}
+		}
+
+		else {
+			currentNode = lastNode;
+			
+			for(int i = howManyElements+1; i > position; i--) {
+				currentNode = currentNode.getPreviousNode();
+			}
+		}
+		return currentNode.getElement();
+	}
 	
+	//print
 	public void print() throws Exception{
 		if(isEmpty()) {
 			throw new Exception(
