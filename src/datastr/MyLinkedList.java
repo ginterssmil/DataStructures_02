@@ -234,6 +234,13 @@ public class MyLinkedList<Ttype> {
 		return foundPositions;
 	}
 	
+	//makeEmpty
+	public void makeEmpty() {
+		firstNode = null;
+		lastNode = null;
+		howManyElements = 0;
+		System.gc();
+	}
 	//print
 	public void print() throws Exception{
 		if(isEmpty()) {
