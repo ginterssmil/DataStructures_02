@@ -30,7 +30,10 @@ public class MainService {
 			symbols.print();
 			
 			System.out.println(symbols.get(3));
-
+			symbols.add('Q');
+			System.out.println(symbols.search('Q'));
+			symbols.add('Q');
+			System.out.println(symbols.search('Q'));
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());

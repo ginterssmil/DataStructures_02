@@ -1,5 +1,7 @@
 package datastr;
 
+import java.util.ArrayList;
+
 public class MyNode<Ttype> {
 	private Ttype element;
 	private MyNode<Ttype> nextNode = null;
